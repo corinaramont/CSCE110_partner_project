@@ -2,6 +2,14 @@ def option1():
     print() #serves as filler so error doesn't occur for now in early stages
 
 def option2():
+    """The instructor should be able to generate a report for a student in a text file by entering the student’s UIN. Name the file UIN.txt where UIN is the student’s UIN"""
+    #Should include:
+    # 1. Exams mean
+    # 2. Labs mean
+    # 3. Quizzes mean
+    # 4. Reading activites mean
+    # 5. Score as a percentage
+    # 5. Letter Grade
     print()
     
 def option3():
@@ -40,7 +48,7 @@ def main():
         if choice == 1:
             option1()
         elif choice == 2:
-            option2()
+            option2(id_grades)
         elif choice == 3:
             option3()
         elif choice == 4:
