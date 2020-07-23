@@ -1,17 +1,22 @@
 def option1():
+    print() #serves as filler so error doesn't occur for now in early stages
 
 def option2():
-
+    print()
+    
 def option3():
-
+    print()
+    
 def option4():
-
+    print()
+    
 def option5():
-
+    print()
 
 def main():
     """This is the driver function of this program."""
     choice = ""
+    id_grades = dict()
 
     while choice != "q" or choice != "quit" or choice != "6":
         print(f"*******************Main Menu*****************")
@@ -23,7 +28,15 @@ def main():
         print(f"6. Quit")
         print(f"************************************************")
         choice = (input("Enter option number here: "))
+        
         #read file here to collect data???
+        with open("grades.csv", "r") as grades_text:
+            content = grades_text.read().split("\n")
+            content.remove(content[0])
+
+        for line in content: #puts id string as key, string of grades as value
+            id_grades[line[0:10]] = line[11::]
+
         if choice == 1:
             option1()
         elif choice == 2:
