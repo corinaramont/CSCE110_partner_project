@@ -1,23 +1,28 @@
 def option1():
     print() #serves as filler so error doesn't occur for now in early stages
 
-def option2():
+def option2(data_base):
     """The instructor should be able to generate a report for a student in a text file by entering the student’s UIN. Name the file UIN.txt where UIN is the student’s UIN"""
     #Should include:
     # 1. Exams mean
     # 2. Labs mean
     # 3. Quizzes mean
-    # 4. Reading activites mean
+    # 4. Reading activities mean
     # 5. Score as a percentage
     # 5. Letter Grade
-    print()
-    
+    total_students = len(data_base)
+    print(f"Total number of students: {total_students}")
+    for grades in data_base.values():
+        indiv_student_grades = grades.split(",")
+        print(indiv_student_grades)
+        indiv_student_grades = []
+
 def option3():
     print()
-    
+
 def option4():
     print()
-    
+
 def option5():
     print()
 
@@ -36,7 +41,7 @@ def main():
         print(f"6. Quit")
         print(f"************************************************")
         choice = (input("Enter option number here: "))
-        
+
         #read file here to collect data???
         with open("grades.csv", "r") as grades_text:
             content = grades_text.read().split("\n")
@@ -45,17 +50,17 @@ def main():
         for line in content: #puts id string as key, string of grades as value
             id_grades[line[0:10]] = line[11::]
 
-        if choice == 1:
+        if choice == "1":
             option1()
-        elif choice == 2:
+        elif choice == "2":
             option2(id_grades)
-        elif choice == 3:
+        elif choice == "3":
             option3()
-        elif choice == 4:
+        elif choice == "4":
             option4()
-        elif choice == 5:
+        elif choice == "5":
             option5()
-        elif choice == 6 or choice == "q" or choice == "quit":
+        elif choice == "6" or choice == "q" or choice == "quit":
             break #as a safe measure idk if we need this
 
 
