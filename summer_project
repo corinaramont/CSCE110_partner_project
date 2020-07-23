@@ -1,3 +1,23 @@
+# File:
+# Author: Ritika Annaparedy, Corina Ramont
+# Date:
+# Emails:
+
+def letter_grade(grade): #added this since we need this more than once
+    """This function determines the letter grade of the numerical grade."""
+    if grade >= 90 and grade <= 100:
+        letter = 'A'
+    elif grade >= 80 and grade <= 89:
+        letter = 'B'
+    elif grade >= 70 and grade <= 79:
+        letter = 'C'
+    elif grade >= 60 and grade <= 69:
+        letter = 'D'
+    elif grade < 60:
+        letter = 'F'
+
+    return letter
+
 def option1():
     print() #serves as filler so error doesn't occur for now in early stages
 
@@ -10,12 +30,11 @@ def option2(data_base):
     # 4. Reading activities mean
     # 5. Score as a percentage
     # 5. Letter Grade
-    
+
     uin_choice = input("Enter student's UIN: ")
     file_name = uin_choice + ".txt"
-    total_students = len(data_base)
     grades = data_base[uin_choice].split(",")
-            
+
     avg_indiv_lab_grade = (float(grades[0]) + float(grades[1]) + float(grades[2]) + float(grades[3]) + float(grades[4]) + float(grades[5])) / 6
     avg_quiz_grade = (float(grades[6]) + float(grades[7]) + float(grades[8]) + float(grades[9]) + float(grades[10]) + float(grades[11])) / 6
     avg_reading_grade = (float(grades[12]) + float(grades[13]) + float(grades[14]) + float(grades[15]) + float(grades[16]) + float(grades[17])) / 6
@@ -23,10 +42,17 @@ def option2(data_base):
     exam2_grade = float(grades[19])
     exam3_grade = float(grades[20])
     project_grade = float(grades[21])
+    exams_mean = (exam1_grade + exam2_grade + exam3_grade) / 3
+    score = round((0.15*(exam1_grade + exam2_grade + exam3_grade)) + (0.25*avg_indiv_lab_grade) + (0.10 * avg_quiz_grade) + (0.10 * avg_reading_grade) + (0.10 * project_grade),1)
+    grade_letter = letter_grade(score)
 
     with open(file_name, "w") as report_text:
-        report_text.write(f"Total number of students: {total_students}")
-
+        report_text.write(f"Exams mean: {round(exams_mean,1)}\n")
+        report_text.write(f"Labs mean: {round(avg_indiv_lab_grade,1)}\n")
+        report_text.write(f"Quizzes mean: {round(avg_quiz_grade,1)}\n")
+        report_text.write(f"Reading activities mean: {round(avg_reading_grade,1)}\n")
+        report_text.write(f"Score: {score}%\n")
+        report_text.write(f"Letter grade: {grade_letter}\n")
 
 def option3():
     print()
