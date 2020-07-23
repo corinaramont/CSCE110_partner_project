@@ -11,11 +11,14 @@ def option2(data_base):
     # 5. Score as a percentage
     # 5. Letter Grade
     total_students = len(data_base)
-    print(f"Total number of students: {total_students}")
+    
     for grades in data_base.values():
-        indiv_student_grades = grades.split(",")
-        print(indiv_student_grades)
-        indiv_student_grades = []
+        if grades == "":
+            pass
+        else:
+            indiv_student_grades = grades.split(",")
+
+
 
 def option3():
     print()
@@ -48,7 +51,11 @@ def main():
             content.remove(content[0])
 
         for line in content: #puts id string as key, string of grades as value
-            id_grades[line[0:10]] = line[11::]
+            if line[0:10] == "":
+                pass
+            else:
+                id_grades[line[0:10]] = line[11::]
+
 
         if choice == "1":
             option1()
