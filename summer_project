@@ -1,4 +1,41 @@
+def option1():
+
+def option2():
+
+def option3():
+
+def option4():
+
+def option5():
+
+
 def main():
-  
+    """This is the driver function of this program."""
+    choice = ""
+
+    while choice != "q" or choice != "quit" or choice != "6":
+        print(f"*******************Main Menu*****************")
+        print(f"1. Read CSV file of grades")
+        print(f"2. Generate student report file")
+        print(f"3. Generate student report charts")
+        print(f"4. Generate class report file")
+        print(f"5. Generate class report charts")
+        print(f"6. Quit")
+        print(f"************************************************")
+        choice = (input("Enter option number here: "))
+        #read file here to collect data???
+        if choice == 1:
+            option1()
+        elif choice == 2:
+            option2()
+        elif choice == 3:
+            option3()
+        elif choice == 4:
+            option4()
+        elif choice == 5:
+            option5()
+        elif choice == 6 or choice == "q" or choice == "quit":
+            break #as a safe measure idk if we need this
+
 
 main()
