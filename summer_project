@@ -10,14 +10,22 @@ def option2(data_base):
     # 4. Reading activities mean
     # 5. Score as a percentage
     # 5. Letter Grade
-    total_students = len(data_base)
     
-    for grades in data_base.values():
-        if grades == "":
-            pass
-        else:
-            indiv_student_grades = grades.split(",")
+    uin_choice = input("Enter student's UIN: ")
+    file_name = uin_choice + ".txt"
+    total_students = len(data_base)
+    grades = data_base[uin_choice].split(",")
+            
+    avg_indiv_lab_grade = (float(grades[0]) + float(grades[1]) + float(grades[2]) + float(grades[3]) + float(grades[4]) + float(grades[5])) / 6
+    avg_quiz_grade = (float(grades[6]) + float(grades[7]) + float(grades[8]) + float(grades[9]) + float(grades[10]) + float(grades[11])) / 6
+    avg_reading_grade = (float(grades[12]) + float(grades[13]) + float(grades[14]) + float(grades[15]) + float(grades[16]) + float(grades[17])) / 6
+    exam1_grade = float(grades[18])
+    exam2_grade = float(grades[19])
+    exam3_grade = float(grades[20])
+    project_grade = float(grades[21])
 
+    with open(file_name, "w") as report_text:
+        report_text.write(f"Total number of students: {total_students}")
 
 
 def option3():
