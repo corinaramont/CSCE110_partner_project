@@ -120,8 +120,41 @@ def option3(data_base):
     drawing.show()
     drawing.savefig(os.path.join(save_path, f"{uin_choice}_reading_activity_grades.png"))
 
-def option4():
-    print()
+def option4(data_base):
+'''The program generates a report of the whole class in a  new file which includes mean, median, max, min and standard deviation of all the students scores '''
+    for keys, value in data_base.items():
+        grades = data_base[keys].split(',')
+        avg_indiv_lab_grade = (float(grades[0]) + float(grades[1]) + float(grades[2]) + float(grades[3]) + float(grades[4]) + float(grades[5])) / 6
+        avg_quiz_grade = (float(grades[6]) + float(grades[7]) + float(grades[8]) + float(grades[9]) + float(grades[10]) + float(grades[11])) / 6
+        avg_reading_grade = (float(grades[12]) + float(grades[13]) + float(grades[14]) + float(grades[15]) + float(grades[16]) + float(grades[17])) / 6
+        exam1_grade = float(grades[18])
+        exam2_grade = float(grades[19])
+        exam3_grade = float(grades[20])
+        project_grade = float(grades[21])
+        exams_mean = (exam1_grade + exam2_grade + exam3_grade) / 3
+        score = round((0.15*(exams_mean)) + (0.25*avg_indiv_lab_grade) + (0.10 * avg_quiz_grade) + (0.10 * avg_reading_grade) + (0.10 * project_grade),1)
+
+        #might need to get remove scores from list before this will work but not sure how to do that 
+        data_base[keys] = score
+
+    min_score = min(data_base.values())
+    max_score = max(data_base.values())
+    value_list = list(data_base.values())
+    median = statistics.median(value_list)
+    mean = sum(value_list)/ len(value_list)
+    total_students = len(value_list)
+    standard_dev = statistics.stdev(value_list)
+
+    with open("report.txt", "w") as class_report:
+        class_report.write(f"Total number of students: {total_students}\n")
+        class_report.write(f"Minimum score: {min_score}\n")
+        class_report.write(f"Maximum score: {max_score}\n")
+        class_report.write(f"Median score: {median}\n")
+        class_report.write(f"Mean score: {mean}\n")
+        class_report.write(f"Standard deviation: {standard_dev}\n")
+    class_report.close()
+    #not sure if we need to close the file
+
 
 def option5():
     print()
