@@ -65,15 +65,16 @@ def option2(data_base):
         report_text.write(f"Score: {score}%\n")
         report_text.write(f"Letter grade: {grade_letter}\n")
 
-def option3(data_base): #how to save this in separate directory?
+def option3(data_base): 
     uin_choice = input("Enter student's UIN: ")
     grades = data_base[uin_choice].split(",")
     color = ['c', 'r', 'g', 'b', 'm', 'y']
-    save_path = f"C:/Users/corin/PycharmProjects/partner_project/{uin_choice}"
-    if os.path.exists(save_path):
+    save_path = str(os.getcwd()) #will work with any directory and save a new directory inside of it
+    new_save_path = save_path + '/' + uin_choice
+    if os.path.exists(new_save_path):
         pass
     else:
-        os.mkdir(save_path)
+        os.mkdir(new_save_path)
 
     exams = ["1", "2", "3"]
     exam_grades = [float(grades[18]), float(grades[19]), float(grades[20])]
@@ -84,7 +85,7 @@ def option3(data_base): #how to save this in separate directory?
     for n in range(len(exam_bars)):
         exam_bars[n].set_color(color[n])
     drawing.show()
-    drawing.savefig(os.path.join(save_path,f"{uin_choice}_exam_grades.png"))
+    drawing.savefig(os.path.join(new_save_path,f"{uin_choice}_exam_grades.png"))
 
     labs = ["1", "2", "3", "4", "5", "6"]
     lab_grades = [float(grades[0]), float(grades[1]), float(grades[2]), float(grades[3]), float(grades[4]), float(grades[5])]
@@ -141,6 +142,9 @@ def main():
         print(f"************************************************\n")
         choice = (input("Enter option number here: "))
         print()
+
+        orig_path = str(os.getcwd())
+        os.chdir(orig_path)
 
         #read file here to collect data???
         with open("grades.csv", "r") as grades_text:
