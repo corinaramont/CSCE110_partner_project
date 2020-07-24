@@ -5,6 +5,7 @@
 
 import matplotlib.pyplot as drawing
 import os
+import statistics
 
 def letter_grade(grade): #added this since we need this more than once
     """This function determines the letter grade of the numerical grade."""
