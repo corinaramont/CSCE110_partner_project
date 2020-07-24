@@ -1,21 +1,51 @@
+# File:
+# Author: Ritika Annapareddy, Corina Ramont
+# Date:
+# Emails: ra2958@tamu.edu, corinaramont.tamu.edu
+
+import matplotlib.pyplot as drawing
+import os
+
+def letter_grade(grade): #added this since we need this more than once
+    """This function determines the letter grade of the numerical grade."""
+    if grade >= 90 and grade <= 100:
+        letter = 'A'
+    elif grade >= 80 and grade <= 89:
+        letter = 'B'
+    elif grade >= 70 and grade <= 79:
+        letter = 'C'
+    elif grade >= 60 and grade <= 69:
+        letter = 'D'
+    elif grade < 60:
+        letter = 'F'
+
+    return letter
+
 def option1():
     print() #serves as filler so error doesn't occur for now in early stages
 
 def option2(data_base):
     """The instructor should be able to generate a report for a student in a text file by entering the student’s UIN. Name the file UIN.txt where UIN is the student’s UIN"""
     #Should include:
-    # 1. Exams mean
-    # 2. Labs mean
-    # 3. Quizzes mean
-    # 4. Reading activities mean
-    # 5. Score as a percentage
-    # 5. Letter Grade
-    
-    uin_choice = input("Enter student's UIN: ")
+    uin_valid = False
+    membership = False
+    while uin_valid == False:
+        uin_choice = input("Enter student's UIN: ")
+        for uin in data_base.keys():
+            if uin_choice == uin:
+                membership = True
+                break
+            else:
+                membership = False
+        if len(uin_choice) != 10 or uin_choice.isdigit() == False or membership == False:
+            print("Error >> the UIN is not in the correct format and/or the UIN does not exist. Please try again.\n")
+            continue
+        else:
+            uin_valid = True
+
     file_name = uin_choice + ".txt"
-    total_students = len(data_base)
     grades = data_base[uin_choice].split(",")
-            
+
     avg_indiv_lab_grade = (float(grades[0]) + float(grades[1]) + float(grades[2]) + float(grades[3]) + float(grades[4]) + float(grades[5])) / 6
     avg_quiz_grade = (float(grades[6]) + float(grades[7]) + float(grades[8]) + float(grades[9]) + float(grades[10]) + float(grades[11])) / 6
     avg_reading_grade = (float(grades[12]) + float(grades[13]) + float(grades[14]) + float(grades[15]) + float(grades[16]) + float(grades[17])) / 6
@@ -23,13 +53,71 @@ def option2(data_base):
     exam2_grade = float(grades[19])
     exam3_grade = float(grades[20])
     project_grade = float(grades[21])
+    exams_mean = (exam1_grade + exam2_grade + exam3_grade) / 3
+    score = round((0.15*(exam1_grade + exam2_grade + exam3_grade)) + (0.25*avg_indiv_lab_grade) + (0.10 * avg_quiz_grade) + (0.10 * avg_reading_grade) + (0.10 * project_grade),1)
+    grade_letter = letter_grade(score)
 
     with open(file_name, "w") as report_text:
-        report_text.write(f"Total number of students: {total_students}")
+        report_text.write(f"Exams mean: {round(exams_mean,1)}\n")
+        report_text.write(f"Labs mean: {round(avg_indiv_lab_grade,1)}\n")
+        report_text.write(f"Quizzes mean: {round(avg_quiz_grade,1)}\n")
+        report_text.write(f"Reading activities mean: {round(avg_reading_grade,1)}\n")
+        report_text.write(f"Score: {score}%\n")
+        report_text.write(f"Letter grade: {grade_letter}\n")
 
+def option3(data_base): #how to save this in separate directory?
+    uin_choice = input("Enter student's UIN: ")
+    grades = data_base[uin_choice].split(",")
+    color = ['c', 'r', 'g', 'b', 'm', 'y']
+    save_path = f"C:/Users/corin/PycharmProjects/partner_project/{uin_choice}"
+    if os.path.exists(save_path):
+        pass
+    else:
+        os.mkdir(save_path)
 
-def option3():
-    print()
+    exams = ["1", "2", "3"]
+    exam_grades = [float(grades[18]), float(grades[19]), float(grades[20])]
+    exam_bars = drawing.bar(exams, exam_grades)
+    drawing.xlabel("Exam numbers")
+    drawing.ylabel("Exam grades")
+    drawing.title(f"Exam Grades For {uin_choice}")
+    for n in range(len(exam_bars)):
+        exam_bars[n].set_color(color[n])
+    drawing.show()
+    drawing.savefig(os.path.join(save_path,f"{uin_choice}_exam_grades.png"))
+
+    labs = ["1", "2", "3", "4", "5", "6"]
+    lab_grades = [float(grades[0]), float(grades[1]), float(grades[2]), float(grades[3]), float(grades[4]), float(grades[5])]
+    lab_bars = drawing.bar(labs, lab_grades)
+    drawing.xlabel("Lab numbers")
+    drawing.ylabel("Lab grades")
+    drawing.title(f"Lab Grades For {uin_choice}")
+    for n in range(len(lab_bars)):
+        lab_bars[n].set_color(color[n])
+    drawing.show()
+    drawing.savefig(os.path.join(save_path,f"{uin_choice}_lab_grades.png"))
+
+    quizzes = ["1", "2", "3", "4", "5", "6"]
+    quiz_grades = [float(grades[6]), float(grades[7]), float(grades[8]), float(grades[9]), float(grades[10]), float(grades[11])]
+    quiz_bars = drawing.bar(quizzes, quiz_grades)
+    drawing.xlabel("Quiz numbers")
+    drawing.ylabel("Quiz grades")
+    drawing.title(f"Quiz Grades for {uin_choice}")
+    for n in range(len(quiz_bars)):
+        quiz_bars[n].set_color(color[n])
+    drawing.show()
+    drawing.savefig(os.path.join(save_path, f"{uin_choice}_quiz_grades.png"))
+
+    readings = ["1", "2", "3", "4", "5", "6"]
+    reading_grades = [float(grades[12]),  float(grades[13]), float(grades[14]), float(grades[15]), float(grades[16]), float(grades[17])]
+    reading_bars = drawing.bar(readings, reading_grades)
+    drawing.xlabel("Reading activity numbers")
+    drawing.ylabel("Reading activity grades")
+    drawing.title(f"Reading Activity Grades for {uin_choice}")
+    for n in range(len(reading_bars)):
+        reading_bars[n].set_color(color[n])
+    drawing.show()
+    drawing.savefig(os.path.join(save_path, f"{uin_choice}_reading_activity_grades.png"))
 
 def option4():
     print()
@@ -50,8 +138,9 @@ def main():
         print(f"4. Generate class report file")
         print(f"5. Generate class report charts")
         print(f"6. Quit")
-        print(f"************************************************")
+        print(f"************************************************\n")
         choice = (input("Enter option number here: "))
+        print()
 
         #read file here to collect data???
         with open("grades.csv", "r") as grades_text:
@@ -64,19 +153,18 @@ def main():
             else:
                 id_grades[line[0:10]] = line[11::]
 
-
         if choice == "1":
             option1()
         elif choice == "2":
             option2(id_grades)
         elif choice == "3":
-            option3()
+            option3(id_grades)
         elif choice == "4":
             option4()
         elif choice == "5":
             option5()
         elif choice == "6" or choice == "q" or choice == "quit":
-            break #as a safe measure idk if we need this
+            break #as a safe measure idk if we actually need this tho :)
 
 
 main()
