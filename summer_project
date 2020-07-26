@@ -26,8 +26,8 @@ def option1():
     print() #serves as filler so error doesn't occur for now in early stages
 
 def option2(data_base):
-    """The instructor should be able to generate a report for a student in a text file by entering the student’s UIN. Name the file UIN.txt where UIN is the student’s UIN"""
-    #Should include:
+    """The function generates a report for a student in a text file by entering the student’s UIN with name of the file as UIN.txt where UIN is the student’s UIN"""
+
     uin_valid = False
     membership = False
     while uin_valid == False:
@@ -67,6 +67,8 @@ def option2(data_base):
         report_text.write(f"Letter grade: {grade_letter}\n")
 
 def option3(data_base): 
+    '''This function generates an individualized bar graphs for a student by typing in their UIN.'''
+    
     uin_choice = input("Enter student's UIN: ")
     grades = data_base[uin_choice].split(",")
     color = ['c', 'r', 'g', 'b', 'm', 'y']
@@ -123,6 +125,7 @@ def option3(data_base):
 
 def option4(data_base):
 '''The program generates a report of the whole class in a  new file which includes mean, median, max, min and standard deviation of all the students scores '''
+
     for keys, value in data_base.items():
         grades = data_base[keys].split(',')
         avg_indiv_lab_grade = (float(grades[0]) + float(grades[1]) + float(grades[2]) + float(grades[3]) + float(grades[4]) + float(grades[5])) / 6
@@ -135,7 +138,7 @@ def option4(data_base):
         exams_mean = (exam1_grade + exam2_grade + exam3_grade) / 3
         score = round((0.15*(exams_mean)) + (0.25*avg_indiv_lab_grade) + (0.10 * avg_quiz_grade) + (0.10 * avg_reading_grade) + (0.10 * project_grade),1)
 
-        #might need to get remove scores from list before this will work but not sure how to do that 
+        #might need to get remove scores from list before this will work but not sure how to do that --> i think this works actually! :)
         data_base[keys] = score
 
     min_score = min(data_base.values())
@@ -151,17 +154,15 @@ def option4(data_base):
         class_report.write(f"Minimum score: {min_score}\n")
         class_report.write(f"Maximum score: {max_score}\n")
         class_report.write(f"Median score: {median}\n")
-        class_report.write(f"Mean score: {mean}\n")
-        class_report.write(f"Standard deviation: {standard_dev}\n")
-    class_report.close()
-    #not sure if we need to close the file
-
-
+        class_report.write(f"Mean score: {round(mean,1)}\n")
+        class_report.write(f"Standard deviation: {round(standard_dev,1)}\n")
+ 
 def option5():
     print()
 
 def main():
     """This is the driver function of this program."""
+    
     choice = ""
     id_grades = dict()
 
@@ -180,7 +181,7 @@ def main():
         orig_path = str(os.getcwd())
         os.chdir(orig_path)
 
-        #read file here to collect data???
+        #read file here to collect data
         with open("grades.csv", "r") as grades_text:
             content = grades_text.read().split("\n")
             content.remove(content[0])
@@ -198,9 +199,9 @@ def main():
         elif choice == "3":
             option3(id_grades)
         elif choice == "4":
-            option4()
+            option4(id_grades)
         elif choice == "5":
-            option5()
+            option5(id_grades)
         elif choice == "6" or choice == "q" or choice == "quit":
             break #as a safe measure idk if we actually need this tho :)
 
