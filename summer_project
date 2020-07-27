@@ -70,6 +70,7 @@ def option2(data_base):
         report_text.write(f"Reading activities mean: {round(avg_reading_grade,1)}\n")
         report_text.write(f"Score: {score}%\n")
         report_text.write(f"Letter grade: {grade_letter}\n")
+    #do we need to close this file?
 
 def option3(data_base): 
     '''This function generates an individualized bar graphs for a student by typing in their UIN.'''
@@ -129,7 +130,7 @@ def option3(data_base):
     drawing.savefig(os.path.join(save_path, f"{uin_choice}_reading_activity_grades.png"))
 
 def option4(data_base):
-'''The program generates a report of the whole class in a  new file which includes mean, median, max, min and standard deviation of all the students scores '''
+'''This function generates a report of the whole class in a  new file which includes mean, median, max, min and standard deviation of all the students scores '''
 
     for keys, value in data_base.items():
         grades = data_base[keys].split(',')
@@ -158,12 +159,59 @@ def option4(data_base):
         class_report.write(f"Total number of students: {total_students}\n")
         class_report.write(f"Minimum score: {min_score}\n")
         class_report.write(f"Maximum score: {max_score}\n")
-        class_report.write(f"Median score: {median}\n")
-        class_report.write(f"Mean score: {round(mean,1)}\n")
+        class_report.write(f"Median score: {round(median, 1)}\n")
+        class_report.write(f"Mean score: {round(mean, 1)}\n")
         class_report.write(f"Standard deviation: {round(standard_dev,1)}\n")
  
-def option5():
-    print()
+def option5(data_base):
+'''This function generates a pie chart and a bar graph of the grade distributions of the whole class'''
+    data_base = data_base.option4(data_base)
+    grade_distribution = list(data_base.values())
+    a = 0
+    b = 0
+    c = 0
+    d = 0
+    f = 0
+    total_students = len(grade_distribution)
+    for i in grade_distribution:
+        if i == "A":
+            a += 1
+        elif i == "B":
+            b += 1
+        elif i == "C":
+            c += 1
+        elif i == "D":
+            d += 1
+        elif i == "F":
+            f += 1
+
+    colors = ['c', 'r', 'g', 'b', 'm']
+    save_path = str(os.getcwd())
+    new_save_path = save_path + '/' + 'Grade_distribution'
+    if os.path.exists(new_save_path):
+        pass
+    else:
+        os.mkdir(new_save_path)
+
+    pie_labels = ["A", "B", "C", "D", "F"]
+    pie_sizes = [a, b, c, d, f]
+    drawing.pie(pie_sizes, labels=pie_labels, autopct='%1.1f%%', color=colors)
+    drawing.title('Grade Distribution')
+    drawing.axis('equal')
+    drawing.show()
+    drawing.savefig(os.path.join(new_save_path, f"pie_grade_distribution.png"))
+
+    bar_labels = ["A", "B", "C", "D", "F"]
+    bar_grades = [a, b, c, d, f]
+    grade_bar_graph = drawing.bar(bar_labels, bar_grades)
+    drawing.xlabel("Letter Grades")
+    drawing.ylabel("Number of Each Letter Grade")
+    drawing.title("Grade Distribution")
+    for n in range(len(grade_bar_graph)):
+        grade_bar_graph[n].set_color(colors[n])
+    drawing.show()
+    drawing.savefig(os.path.join(new_save_path, f"bar_grade_distribution.png"))
+
 
 def main():
     """This is the driver function of this program."""
