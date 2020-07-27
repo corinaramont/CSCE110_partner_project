@@ -23,7 +23,11 @@ def letter_grade(grade): #added this since we need this more than once
     return letter
 
 def option1():
-    print() #serves as filler so error doesn't occur for now in early stages
+    """The function reads a file when the user inputs the file's name."""
+    pfile_name = input("Enter only the file name: ")
+    with open(file_name, 'r') as file_contents:
+        file_contents.read()
+    print("File has been successfully read!")
 
 def option2(data_base):
     """The function generates a report for a student in a text file by entering the student’s UIN with name of the file as UIN.txt where UIN is the student’s UIN"""
