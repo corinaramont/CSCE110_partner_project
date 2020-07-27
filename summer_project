@@ -231,9 +231,6 @@ def main():
         choice = (input("Enter option number here: "))
         print()
 
-        orig_path = str(os.getcwd())
-        os.chdir(orig_path)
-
         #read file here to collect data
         with open("grades.csv", "r") as grades_text:
             content = grades_text.read().split("\n")
