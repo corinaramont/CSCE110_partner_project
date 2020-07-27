@@ -7,7 +7,20 @@ import matplotlib.pyplot as drawing
 import os
 import statistics
 
-def letter_grade(grade): #added this since we need this more than once
+def grade_gathering(person_grades):
+    avg_indiv_lab_grade1 = (float(person_grades[0]) + float(person_grades[1]) + float(person_grades[2]) + float(person_grades[3]) + float(person_grades[4]) + float(person_grades[5])) / 6
+    avg_quiz_grade1 = (float(person_grades[6]) + float(person_grades[7]) + float(person_grades[8]) + float(person_grades[9]) + float(person_grades[10]) + float(person_grades[11])) / 6
+    avg_reading_grade1 = (float(person_grades[12]) + float(person_grades[13]) + float(person_grades[14]) + float(person_grades[15]) + float(person_grades[16]) + float(person_grades[17])) / 6
+    exam1_grade1 = float(person_grades[18])
+    exam2_grade1 = float(person_grades[19])
+    exam3_grade1 = float(person_grades[20])
+    project_grade1 = float(person_grades[21])
+    exams_mean1 = (exam1_grade1 + exam2_grade1 + exam3_grade1) / 3
+
+    return avg_indiv_lab_grade1, avg_quiz_grade1, avg_reading_grade1, exam1_grade1, exam2_grade1, exam3_grade1, project_grade1, exams_mean1
+
+
+def letter_grade(grade):  # added this since we need this more than once
     """This function determines the letter grade of the numerical grade."""
     if grade >= 90 and grade <= 100:
         letter = 'A'
@@ -22,13 +35,15 @@ def letter_grade(grade): #added this since we need this more than once
 
     return letter
 
+
 def option1():
     """The function reads a file when the user inputs the file's name."""
-    
+
     file_name = input("Enter only the file name: ")
     with open(file_name, 'r') as file_contents:
         file_contents.read()
-    print("File has been successfully read!")
+    print("File has been successfully read!\n")
+
 
 def option2(data_base):
     """The function generates a report for a student in a text file by entering the student’s UIN with name of the file as UIN.txt where UIN is the student’s UIN"""
@@ -52,33 +67,26 @@ def option2(data_base):
     file_name = uin_choice + ".txt"
     grades = data_base[uin_choice].split(",")
 
-    avg_indiv_lab_grade = (float(grades[0]) + float(grades[1]) + float(grades[2]) + float(grades[3]) + float(grades[4]) + float(grades[5])) / 6
-    avg_quiz_grade = (float(grades[6]) + float(grades[7]) + float(grades[8]) + float(grades[9]) + float(grades[10]) + float(grades[11])) / 6
-    avg_reading_grade = (float(grades[12]) + float(grades[13]) + float(grades[14]) + float(grades[15]) + float(grades[16]) + float(grades[17])) / 6
-    exam1_grade = float(grades[18])
-    exam2_grade = float(grades[19])
-    exam3_grade = float(grades[20])
-    project_grade = float(grades[21])
-    exams_mean = (exam1_grade + exam2_grade + exam3_grade) / 3
-    score = round((0.15*(exam1_grade + exam2_grade + exam3_grade)) + (0.25*avg_indiv_lab_grade) + (0.10 * avg_quiz_grade) + (0.10 * avg_reading_grade) + (0.10 * project_grade),1)
+    avg_indiv_lab_grade, avg_quiz_grade, avg_reading_grade, exam1_grade, exam2_grade, exam3_grade, project_grade, exams_mean = grade_gathering(grades)
+    score = round((0.15 * (exam1_grade + exam2_grade + exam3_grade)) + (0.25 * avg_indiv_lab_grade) + (0.10 * avg_quiz_grade) + (0.10 * avg_reading_grade) + (0.10 * project_grade), 1)
     grade_letter = letter_grade(score)
 
     with open(file_name, "w") as report_text:
-        report_text.write(f"Exams mean: {round(exams_mean,1)}\n")
-        report_text.write(f"Labs mean: {round(avg_indiv_lab_grade,1)}\n")
-        report_text.write(f"Quizzes mean: {round(avg_quiz_grade,1)}\n")
-        report_text.write(f"Reading activities mean: {round(avg_reading_grade,1)}\n")
+        report_text.write(f"Exams mean: {round(exams_mean, 1)}\n")
+        report_text.write(f"Labs mean: {round(avg_indiv_lab_grade, 1)}\n")
+        report_text.write(f"Quizzes mean: {round(avg_quiz_grade, 1)}\n")
+        report_text.write(f"Reading activities mean: {round(avg_reading_grade, 1)}\n")
         report_text.write(f"Score: {score}%\n")
         report_text.write(f"Letter grade: {grade_letter}\n")
-    #do we need to close this file?
 
-def option3(data_base): 
+
+def option3(data_base):
     '''This function generates an individualized bar graphs for a student by typing in their UIN.'''
-    
+
     uin_choice = input("Enter student's UIN: ")
     grades = data_base[uin_choice].split(",")
     color = ['c', 'r', 'g', 'b', 'm', 'y']
-    save_path = str(os.getcwd()) #will work with any directory and save a new directory inside of it
+    save_path = str(os.getcwd())  # will work with any directory and save a new directory inside of it
     new_save_path = save_path + '/' + uin_choice
     if os.path.exists(new_save_path):
         pass
@@ -94,10 +102,10 @@ def option3(data_base):
     for n in range(len(exam_bars)):
         exam_bars[n].set_color(color[n])
     drawing.show()
-    drawing.savefig(os.path.join(new_save_path,f"{uin_choice}_exam_grades.png"))
+    drawing.savefig(os.path.join(new_save_path, f"{uin_choice}_exam_grades.png"))
 
     labs = ["1", "2", "3", "4", "5", "6"]
-    lab_grades = [float(grades[0]), float(grades[1]), float(grades[2]), float(grades[3]), float(grades[4]), float(grades[5])]
+    lab_grades = [float(grades[0]), float(grades[1]), float(grades[2]), float(grades[3]), float(grades[4]),float(grades[5])]
     lab_bars = drawing.bar(labs, lab_grades)
     drawing.xlabel("Lab numbers")
     drawing.ylabel("Lab grades")
@@ -105,7 +113,7 @@ def option3(data_base):
     for n in range(len(lab_bars)):
         lab_bars[n].set_color(color[n])
     drawing.show()
-    drawing.savefig(os.path.join(save_path,f"{uin_choice}_lab_grades.png"))
+    drawing.savefig(os.path.join(save_path, f"{uin_choice}_lab_grades.png"))
 
     quizzes = ["1", "2", "3", "4", "5", "6"]
     quiz_grades = [float(grades[6]), float(grades[7]), float(grades[8]), float(grades[9]), float(grades[10]), float(grades[11])]
@@ -119,7 +127,7 @@ def option3(data_base):
     drawing.savefig(os.path.join(save_path, f"{uin_choice}_quiz_grades.png"))
 
     readings = ["1", "2", "3", "4", "5", "6"]
-    reading_grades = [float(grades[12]),  float(grades[13]), float(grades[14]), float(grades[15]), float(grades[16]), float(grades[17])]
+    reading_grades = [float(grades[12]), float(grades[13]), float(grades[14]), float(grades[15]), float(grades[16]), float(grades[17])]
     reading_bars = drawing.bar(readings, reading_grades)
     drawing.xlabel("Reading activity numbers")
     drawing.ylabel("Reading activity grades")
@@ -129,39 +137,34 @@ def option3(data_base):
     drawing.show()
     drawing.savefig(os.path.join(save_path, f"{uin_choice}_reading_activity_grades.png"))
 
+
 def option4(data_base):
-'''This function generates a report of the whole class in a  new file which includes mean, median, max, min and standard deviation of all the students scores '''
+    '''The program generates a report of the whole class in a  new file which includes mean, median, max, min and standard deviation of all the students scores '''
 
     for keys, value in data_base.items():
         grades = data_base[keys].split(',')
-        avg_indiv_lab_grade = (float(grades[0]) + float(grades[1]) + float(grades[2]) + float(grades[3]) + float(grades[4]) + float(grades[5])) / 6
-        avg_quiz_grade = (float(grades[6]) + float(grades[7]) + float(grades[8]) + float(grades[9]) + float(grades[10]) + float(grades[11])) / 6
-        avg_reading_grade = (float(grades[12]) + float(grades[13]) + float(grades[14]) + float(grades[15]) + float(grades[16]) + float(grades[17])) / 6
-        exam1_grade = float(grades[18])
-        exam2_grade = float(grades[19])
-        exam3_grade = float(grades[20])
-        project_grade = float(grades[21])
-        exams_mean = (exam1_grade + exam2_grade + exam3_grade) / 3
-        score = round((0.15*(exams_mean)) + (0.25*avg_indiv_lab_grade) + (0.10 * avg_quiz_grade) + (0.10 * avg_reading_grade) + (0.10 * project_grade),1)
 
-        #might need to get remove scores from list before this will work but not sure how to do that --> i think this works actually! :)
+        avg_indiv_lab_grade, avg_quiz_grade, avg_reading_grade, exam1_grade, exam2_grade, exam3_grade, project_grade, exams_mean = grade_gathering(grades)
+        score = round((0.15 * (exams_mean)) + (0.25 * avg_indiv_lab_grade) + (0.10 * avg_quiz_grade) + (0.10 * avg_reading_grade) + (0.10 * project_grade), 1)
+
+        # might need to get remove scores from list before this will work but not sure how to do that --> i think this works actually! :)
         data_base[keys] = score
 
     min_score = min(data_base.values())
     max_score = max(data_base.values())
     value_list = list(data_base.values())
     median = statistics.median(value_list)
-    mean = sum(value_list)/ len(value_list)
+    mean = sum(value_list) / len(value_list)
     total_students = len(value_list)
     standard_dev = statistics.stdev(value_list)
 
     with open("report.txt", "w") as class_report:
         class_report.write(f"Total number of students: {total_students}\n")
-        class_report.write(f"Minimum score: {min_score}\n")
-        class_report.write(f"Maximum score: {max_score}\n")
-        class_report.write(f"Median score: {round(median, 1)}\n")
+        class_report.write(f"Minimum score: {round(min_score,1)}\n")
+        class_report.write(f"Maximum score: {round(max_score,1)}\n")
+        class_report.write(f"Median score: {round(median,1)}\n")
         class_report.write(f"Mean score: {round(mean, 1)}\n")
-        class_report.write(f"Standard deviation: {round(standard_dev,1)}\n")
+        class_report.write(f"Standard deviation: {round(standard_dev, 1)}\n")
  
 def option5(data_base):
 '''This function generates a pie chart and a bar graph of the grade distributions of the whole class'''
