@@ -24,7 +24,8 @@ def letter_grade(grade): #added this since we need this more than once
 
 def option1():
     """The function reads a file when the user inputs the file's name."""
-    pfile_name = input("Enter only the file name: ")
+    
+    file_name = input("Enter only the file name: ")
     with open(file_name, 'r') as file_contents:
         file_contents.read()
     print("File has been successfully read!")
