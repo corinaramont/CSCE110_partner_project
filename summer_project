@@ -177,15 +177,15 @@ def option5(data_base):
     f = 0
     total_students = len(grade_distribution)
     for i in grade_distribution:
-        if i == "A":
+        if i >= 90 and i <= 100:
             a += 1
-        elif i == "B":
+        elif i >= 80 and i <= 89:
             b += 1
-        elif i == "C":
+        elif i >= 70 and i <= 79:
             c += 1
-        elif i == "D":
+        elif i >= 60 and i <= 69:
             d += 1
-        elif i == "F":
+        elif i < 60:
             f += 1
 
     colors = ['c', 'r', 'g', 'b', 'm']
