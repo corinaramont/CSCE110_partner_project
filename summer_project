@@ -149,7 +149,7 @@ def option4(data_base):
 
         # might need to get remove scores from list before this will work but not sure how to do that --> i think this works actually! :)
         data_base[keys] = score
-        return data_base
+        
 
     min_score = min(data_base.values())
     max_score = max(data_base.values())
@@ -169,7 +169,15 @@ def option4(data_base):
  
 def option5(data_base):
 '''This function generates a pie chart and a bar graph of the grade distributions of the whole class'''
-    data_base = data_base.option4(data_base)
+
+    for keys, value in data_base.items():
+        grades = data_base[keys].split(',')
+
+        avg_indiv_lab_grade, avg_quiz_grade, avg_reading_grade, exam1_grade, exam2_grade, exam3_grade, project_grade, exams_mean = grade_gathering(grades)
+        score = round((0.15 * (exams_mean)) + (0.25 * avg_indiv_lab_grade) + (0.10 * avg_quiz_grade) + (0.10 * avg_reading_grade) + (0.10 * project_grade), 1)
+
+        data_base[keys] = score
+        
     grade_distribution = list(data_base.values())
     a = 0
     b = 0
@@ -177,6 +185,7 @@ def option5(data_base):
     d = 0
     f = 0
     total_students = len(grade_distribution)
+    
     for i in grade_distribution:
         if value < 60:
             f += 1
