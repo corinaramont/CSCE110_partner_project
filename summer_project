@@ -22,13 +22,13 @@ def grade_gathering(person_grades):
 
 def letter_grade(grade):  # added this since we need this more than once
     """This function determines the letter grade of the numerical grade."""
-    if grade >= 90 and grade <= 100:
+    if grade <= 100:
         letter = 'A'
-    elif grade >= 80 and grade <= 89:
+    elif grade <= 90:
         letter = 'B'
-    elif grade >= 70 and grade <= 79:
+    elif grade <= 80:
         letter = 'C'
-    elif grade >= 60 and grade <= 69:
+    elif grade <= 70:
         letter = 'D'
     elif grade < 60:
         letter = 'F'
@@ -149,6 +149,7 @@ def option4(data_base):
 
         # might need to get remove scores from list before this will work but not sure how to do that --> i think this works actually! :)
         data_base[keys] = score
+        return data_base
 
     min_score = min(data_base.values())
     max_score = max(data_base.values())
@@ -177,13 +178,13 @@ def option5(data_base):
     f = 0
     total_students = len(grade_distribution)
     for i in grade_distribution:
-        if i >= 90 and i <= 100:
+        if i <= 100:
             a += 1
-        elif i >= 80 and i <= 89:
+        elif i <= 90:
             b += 1
-        elif i >= 70 and i <= 79:
+        elif i <= 80:
             c += 1
-        elif i >= 60 and i <= 69:
+        elif i <= 70:
             d += 1
         elif i < 60:
             f += 1
