@@ -22,17 +22,17 @@ def grade_gathering(person_grades):
 
 def letter_grade(grade):  # added this since we need this more than once
     """This function determines the letter grade of the numerical grade."""
-    if grade <= 100:
-        letter = 'A'
-    elif grade <= 90:
-        letter = 'B'
-    elif grade <= 80:
-        letter = 'C'
+    if grade < 60:
+        letter = 'F'
     elif grade <= 70:
         letter = 'D'
-    elif grade < 60:
-        letter = 'F'
-
+    elif grade <= 80:
+        letter = 'C'
+    elif grade <= 90:
+        letter = 'B'
+    elif grade <= 100:
+        letter = 'A'
+    
     return letter
 
 
@@ -178,16 +178,16 @@ def option5(data_base):
     f = 0
     total_students = len(grade_distribution)
     for i in grade_distribution:
-        if i <= 100:
-            a += 1
-        elif i <= 90:
-            b += 1
-        elif i <= 80:
-            c += 1
-        elif i <= 70:
-            d += 1
-        elif i < 60:
+        if value < 60:
             f += 1
+        elif value <= 70:
+            d += 1
+        elif value <= 80:
+            c += 1
+        elif value <= 90:
+            b += 1
+        elif value <= 100:
+            a += 1
 
     colors = ['c', 'r', 'g', 'b', 'm']
     save_path = str(os.getcwd())
