@@ -8,16 +8,27 @@ import os
 import statistics
 
 def grade_gathering(person_grades):
+    """This function collects each grade from the list of grades for that specific UIN."""
+
     avg_indiv_lab_grade1 = (float(person_grades[0]) + float(person_grades[1]) + float(person_grades[2]) + float(person_grades[3]) + float(person_grades[4]) + float(person_grades[5])) / 6
+    """This gathers all the lab grades of a student and calculates the average lab grade."""
     avg_quiz_grade1 = (float(person_grades[6]) + float(person_grades[7]) + float(person_grades[8]) + float(person_grades[9]) + float(person_grades[10]) + float(person_grades[11])) / 6
+    """This gathers all the quiz grades of a student and calculates the average quiz grade."""
     avg_reading_grade1 = (float(person_grades[12]) + float(person_grades[13]) + float(person_grades[14]) + float(person_grades[15]) + float(person_grades[16]) + float(person_grades[17])) / 6
+    """This gathers all the reading activity grades of a student and calculates the average reading grade."""
+
     exam1_grade1 = float(person_grades[18])
     exam2_grade1 = float(person_grades[19])
     exam3_grade1 = float(person_grades[20])
+    """These statements store the exam 1, exam 2, and exam 3 grade of a student."""
+
     project_grade1 = float(person_grades[21])
+    """This stores the project grade of a student."""
     exams_mean1 = (exam1_grade1 + exam2_grade1 + exam3_grade1) / 3
+    """This calculates the average exam grade of a student."""
 
     return avg_indiv_lab_grade1, avg_quiz_grade1, avg_reading_grade1, exam1_grade1, exam2_grade1, exam3_grade1, project_grade1, exams_mean1
+    """The statement returns all the stored and calculated variables from the grade_gathering function."""
 
 
 def letter_grade(grade):  # added this since we need this more than once
@@ -32,17 +43,25 @@ def letter_grade(grade):  # added this since we need this more than once
         letter = 'B'
     elif grade <= 100:
         letter = 'A'
+    """These if statements categorize numerical grades to a certain letter grade."""
     
     return letter
+    """The statement returns the letter grade for the numerical grade from the letter_grade function."""
 
 
 def option1():
     """The function reads a file when the user inputs the file's name."""
 
     file_name = input("Enter only the file name: ")
-    with open(file_name, 'r') as file_contents:
-        file_contents.read()
-    print("File has been successfully read!\n")
+    """This asks the user to input a file name for the function to read."""
+    try:
+        with open(file_name, 'r') as file_contents:
+            file_contents.read()
+            """This reads the file's contents and if passed, this means the file has been read successfully."""
+        print("File has been successfully read!\n")
+    except:
+        print("File could not be read.")
+        """This statement prints if the file could not be read."""
 
 
 def option2(data_base):
@@ -63,13 +82,18 @@ def option2(data_base):
             continue
         else:
             uin_valid = True
+    """uin_valid and membership are false then while statement determines if the UIN input exists and is valid."""
 
     file_name = uin_choice + ".txt"
+    """file_name is customized by saving the file as the student's UIN."""
     grades = data_base[uin_choice].split(",")
 
     avg_indiv_lab_grade, avg_quiz_grade, avg_reading_grade, exam1_grade, exam2_grade, exam3_grade, project_grade, exams_mean = grade_gathering(grades)
+    """To get these variables, this calls the grade_gathering function."""
     score = round((0.15 * (exam1_grade + exam2_grade + exam3_grade)) + (0.25 * avg_indiv_lab_grade) + (0.10 * avg_quiz_grade) + (0.10 * avg_reading_grade) + (0.10 * project_grade), 1)
+    """This calculates the numerical grade of the student."""
     grade_letter = letter_grade(score)
+    """To get the grade_letter variable, this calls the letter_grade function."""
 
     with open(file_name, "w") as report_text:
         report_text.write(f"Exams mean: {round(exams_mean, 1)}\n")
@@ -78,65 +102,89 @@ def option2(data_base):
         report_text.write(f"Reading activities mean: {round(avg_reading_grade, 1)}\n")
         report_text.write(f"Score: {score}%\n")
         report_text.write(f"Letter grade: {grade_letter}\n")
-
+    """The with statement opens the custom UIN file and writes the student's information to the file."""
 
 def option3(data_base):
     '''This function generates an individualized bar graphs for a student by typing in their UIN.'''
 
     uin_choice = input("Enter student's UIN: ")
+    """uin_choice asks for the user to input the student's UIN."""
     grades = data_base[uin_choice].split(",")
+    """This collects the grades associated with the student's UIN."""
     color = ['c', 'r', 'g', 'b', 'm', 'y']
-    save_path = str(os.getcwd())  # will work with any directory and save a new directory inside of it
+    """This gives an option of colors for the bar charts to use later on in this function."""
+
+    save_path = str(os.getcwd())
     new_save_path = save_path + '/' + uin_choice
     if os.path.exists(new_save_path):
         pass
     else:
         os.mkdir(new_save_path)
+    """This creates a custom directory and save path for the bar chart files to save in. The directory will be created if it doesn't exist already."""
 
     exams = ["1", "2", "3"]
     exam_grades = [float(grades[18]), float(grades[19]), float(grades[20])]
     exam_bars = drawing.bar(exams, exam_grades)
+    """This provides the data to be filled in for the exam grades bar chart for the student."""
+
     drawing.xlabel("Exam numbers")
     drawing.ylabel("Exam grades")
     drawing.title(f"Exam Grades For {uin_choice}")
+    """This labels the exam grades bar chart properly with axis labels and a title."""
+
     for n in range(len(exam_bars)):
         exam_bars[n].set_color(color[n])
     drawing.show()
     drawing.savefig(os.path.join(new_save_path, f"{uin_choice}_exam_grades.png"))
+    """This adds color to the bar graph, lets it show, and save a customized file name for the student's exam grades bar chart."""
 
     labs = ["1", "2", "3", "4", "5", "6"]
-    lab_grades = [float(grades[0]), float(grades[1]), float(grades[2]), float(grades[3]), float(grades[4]),float(grades[5])]
+    lab_grades = [float(grades[0]), float(grades[1]), float(grades[2]), float(grades[3]), float(grades[4]), float(grades[5])]
     lab_bars = drawing.bar(labs, lab_grades)
+    """This provides data to be filled in for the lab grades bar chart for the student."""
+
     drawing.xlabel("Lab numbers")
     drawing.ylabel("Lab grades")
     drawing.title(f"Lab Grades For {uin_choice}")
+    """This labels the lab grades bar chart properly with axis labels and a title."""
+
     for n in range(len(lab_bars)):
         lab_bars[n].set_color(color[n])
     drawing.show()
     drawing.savefig(os.path.join(save_path, f"{uin_choice}_lab_grades.png"))
+    """This adds color to the bar graph, lets it show, and save a customized file name for the student's lab grades bar chart."""
 
     quizzes = ["1", "2", "3", "4", "5", "6"]
     quiz_grades = [float(grades[6]), float(grades[7]), float(grades[8]), float(grades[9]), float(grades[10]), float(grades[11])]
     quiz_bars = drawing.bar(quizzes, quiz_grades)
+    """This provides data to be filled in for the quiz grades bar chart for the student."""
+
     drawing.xlabel("Quiz numbers")
     drawing.ylabel("Quiz grades")
     drawing.title(f"Quiz Grades for {uin_choice}")
+    """This labels the quiz grades bar chart properly with axis labels and a title."""
+
     for n in range(len(quiz_bars)):
         quiz_bars[n].set_color(color[n])
     drawing.show()
     drawing.savefig(os.path.join(save_path, f"{uin_choice}_quiz_grades.png"))
+    """This adds color to the bar graph, lets it show, and save a customized file name for the student's quiz grades bar chart."""
 
     readings = ["1", "2", "3", "4", "5", "6"]
     reading_grades = [float(grades[12]), float(grades[13]), float(grades[14]), float(grades[15]), float(grades[16]), float(grades[17])]
     reading_bars = drawing.bar(readings, reading_grades)
+    """This provides data to be filled in for the reading activity grades bar chart for the student."""
+
     drawing.xlabel("Reading activity numbers")
     drawing.ylabel("Reading activity grades")
     drawing.title(f"Reading Activity Grades for {uin_choice}")
+    """This labels the reading activity grades bar chart properly with axis labels and a title."""
+
     for n in range(len(reading_bars)):
         reading_bars[n].set_color(color[n])
     drawing.show()
     drawing.savefig(os.path.join(save_path, f"{uin_choice}_reading_activity_grades.png"))
-
+    """This adds color to the bar graph, lets it show, and save a customized file name for the student's reading grades bar chart."""
 
 def option4(data_base):
     '''The program generates a report of the whole class in a  new file which includes mean, median, max, min and standard deviation of all the students scores '''
