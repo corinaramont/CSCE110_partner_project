@@ -33,16 +33,16 @@ def grade_gathering(person_grades):
 
 def letter_grade(grade):  # added this since we need this more than once
     """This function determines the letter grade of the numerical grade."""
-    if grade < 60:
-        letter = 'F'
-    elif grade <= 70:
-        letter = 'D'
-    elif grade <= 80:
-        letter = 'C'
-    elif grade <= 90:
-        letter = 'B'
-    elif grade <= 100:
+    if grade >= 90 and grade <= 100:
         letter = 'A'
+    elif grade >= 80 and grade <= 89:
+        letter = 'B'
+    elif grade >= 70 and grade <= 79:
+        letter = 'C'
+    elif grade >= 60 and grade <= 69:
+        letter = 'D'
+    elif grade < 60:
+        letter = 'F'
     """These if statements categorize numerical grades to a certain letter grade."""
     
     return letter
@@ -239,16 +239,17 @@ def option5(data_base):
     f = 0
     total_students = len(grade_distribution)
     for i in grade_distribution:
-        if value < 60:
-            f += 1
-        elif value <= 70:
-            d += 1
-        elif value <= 80:
-            c += 1
-        elif value <= 90:
-            b += 1
-        elif value <= 100:
+        letter_score = letter_grade(i)
+        if letter_score == "A":
             a += 1
+        elif letter_score == "B":
+            b += 1
+        elif letter_score == "C":
+            c += 1
+        elif letter_score == "D":
+            d += 1
+        elif letter_score == "F":
+            f += 1
 
     colors = ['c', 'r', 'g', 'b', 'm']
     save_path = str(os.getcwd())
@@ -259,9 +260,19 @@ def option5(data_base):
         os.mkdir(new_save_path)
 
     '''Creates a pie chart of the class grade distrubutions and saves it to a new directory'''
-    pie_labels = ["A", "B", "C", "D", "F"]
-    pie_sizes = [a, b, c, d, f]
-    drawing.pie(pie_sizes, labels=pie_labels, autopct='%1.1f%%', color=colors)
+    grade_distribution_analyze = {"A": a, "B": b, "C": c, "D": d, "F": f}
+    pie_labels = []
+    pie_sizes = []
+    pie_legend = []
+    for letter, count in grade_distribution_analyze.items():
+        if grade_distribution_analyze[letter] == 0:
+            pass
+        else:
+            pie_labels.append(letter)
+            pie_sizes.append(count)
+            pie_legend.append(f"{letter} = {count}/{total}")
+    drawing.pie(pie_sizes, labels=pie_labels, autopct='%1.1f%%', colors=colors)
+    drawing.legend(pie_legend)
     drawing.title('Grade Distribution')
     drawing.axis('equal')
     drawing.show()
