@@ -252,7 +252,7 @@ def option5(data_base):
 
     colors = ['c', 'r', 'g', 'b', 'm']
     save_path = str(os.getcwd())
-    new_save_path = save_path + '/' + 'Grade_distribution'
+    new_save_path = save_path + '/' + 'class_charts'
     if os.path.exists(new_save_path):
         pass
     else:
@@ -297,6 +297,7 @@ def main():
         print(f"************************************************\n")
         choice = (input("Enter option number here: "))
         print()
+    """The while loop allows the menu to appear repeatedly until the exception is made."""
 
         #read file here to collect data
         with open("grades.csv", "r") as grades_text:
@@ -320,7 +321,7 @@ def main():
         elif choice == "5":
             option5(id_grades)
         elif choice == "6" or choice == "q" or choice == "quit":
-            break #as a safe measure idk if we actually need this tho :)
+            break 
 
 
 main()
