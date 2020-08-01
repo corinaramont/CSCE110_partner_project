@@ -4,8 +4,11 @@
 # Emails: ra2958@tamu.edu, corinaramont.tamu.edu
 
 import matplotlib.pyplot as drawing
+"""The matplotlib module is used for creating bar charts and pie graphs."""
 import os
+"""The os module is used for accessing other directory paths and creating ones."""
 import statistics
+"""The statistics module is used for calculations in option4 like standard deviation."""
 
 def grade_gathering(person_grades):
     """This function collects each grade from the list of grades for that specific UIN."""
@@ -49,17 +52,27 @@ def letter_grade(grade):
 
 def option1():
     """The function reads a file when the user inputs the file's name."""
-
+    id_grades = dict()
     file_name = input("Enter only the file name: ")
     """This asks the user to input a file name for the function to read."""
     try:
         with open(file_name, 'r') as file_contents:
-            file_contents.read()
-        """This reads the file's contents and if passed, this means the file has been read successfully."""
+            content = file_contents.read().split("\n")
+            content.remove(content[0])
+
+        for line in content:
+            if line[0:10] == "":
+                pass
+            else:
+                id_grades[line[0:10]] = line[11::]
+        """This reads the grades.csv file and collects the data to be of use for the rest of the functions."""
         print("File has been successfully read!\n")
+        """This reads the file's contents and if passed, this means the file has been read successfully."""
     except:
-        print("File could not be read.")
+        print("File could not be read.\n")
     """This statement prints if the file could not be read."""
+
+    return id_grades
 
 def option2(data_base):
     """The function generates a report for a student in a text file by entering the student’s UIN with name of the file as UIN.txt where UIN is the student’s UIN"""
@@ -276,6 +289,8 @@ def main():
 
     choice = ""
     id_grades = dict()
+    grades_info = dict()
+
     while choice != "q" or choice != "quit" or choice != "6":
         print(f"*******************Main Menu*****************")
         print(f"1. Read CSV file of grades")
@@ -288,26 +303,17 @@ def main():
         choice = (input("Enter option number here: "))
         print()
 
-        with open("grades.csv", "r") as grades_text:
-            content = grades_text.read().split("\n")
-            content.remove(content[0])
-        for line in content:
-            if line[0:10] == "":
-                pass
-            else:
-                id_grades[line[0:10]] = line[11::]
-        """This reads the grades.csv file and collects the data to be of use for the rest of the functions."""
-
         if choice == "1":
-            option1()
+            grades_info = option1()
+            print(grades_info)
         elif choice == "2":
-            option2(id_grades)
+            option2(grades_info)
         elif choice == "3":
-            option3(id_grades)
+            option3(grades_info)
         elif choice == "4":
-            option4(id_grades)
+            option4(grades_info)
         elif choice == "5":
-            option5(id_grades)
+            option5(grades_info)
         elif choice == "6" or choice == "q" or choice == "quit":
             break
         else:
